@@ -1,13 +1,12 @@
 package com.suavelomito.bootcamp.core.controller;
-
-import com.suavelomito.bootcamp.core.entity.Reserva;
 import com.suavelomito.bootcamp.core.entity.Servicio;
-import com.suavelomito.bootcamp.core.service.implementacion.ReservaServiceImpl;import com.suavelomito.bootcamp.core.service.implementacion.ServicioServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.suavelomito.bootcamp.core.service.implementacion.ServicioServiceImpl;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("http://localhost:4200")
+@RestController
+@RequestMapping("/servicio")
 public class ServicioController {
     private final ServicioServiceImpl sServ;
     public ServicioController(ServicioServiceImpl sServ) {
