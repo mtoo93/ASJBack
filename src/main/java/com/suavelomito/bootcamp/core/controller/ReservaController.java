@@ -24,7 +24,6 @@ public class ReservaController {
         this.rServ = rServ;
 
     }
-
     @GetMapping("/all")
     public List<Reserva> find() {
         return rServ.find();
@@ -35,7 +34,6 @@ public class ReservaController {
 
         return rServ.getReserva(id);
     }
-
     @PostMapping("/add")
     public ResponseEntity<String> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
         try{ ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();

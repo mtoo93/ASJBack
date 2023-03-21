@@ -24,7 +24,7 @@ public class AdminController {
         this.aMap = aMap;
     }
 
-    @GetMapping("/todos")
+    @GetMapping("/all")
     public List<Admin> find(){
         return aServ.find();
     }
