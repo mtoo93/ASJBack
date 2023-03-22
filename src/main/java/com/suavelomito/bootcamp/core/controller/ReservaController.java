@@ -35,14 +35,14 @@ public class ReservaController {
         return rServ.getReserva(id);
     }
     @PostMapping("/add")
-    public ResponseEntity<String> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
+    public ResponseEntity<ReservaDTO> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
         try{ ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
             rServ.agregarReserva(reservaDTO);
-        String message = "Se guardó tu reserva! Cliente: " + reservaDTO.getClienteDTO().getNombreCliente() +
-                ", Fecha: " + reservaDTO.getFecha() +
-                ", Hora: " + reservaDTO.getHora() +
-                ", Servicio: " + reservaDTO.getServicioDTO().getNombreServicio();
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+//        String message = "Se guardó tu reserva! Cliente: " + reservaDTO.getClienteDTO().getNombreCliente() +
+//                ", Fecha: " + reservaDTO.getFecha() +
+//                ", Hora: " + reservaDTO.getHora() +
+//                ", Servicio: " + reservaDTO.getServicioDTO().getNombreServicio();
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservaDTO);
     }
         catch (RuntimeException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
