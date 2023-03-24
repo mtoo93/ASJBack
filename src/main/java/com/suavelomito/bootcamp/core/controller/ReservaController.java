@@ -38,10 +38,6 @@ public class ReservaController {
     public ResponseEntity<ReservaDTO> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
         try{ ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
             rServ.agregarReserva(reservaDTO);
-//        String message = "Se guardó tu reserva! Cliente: " + reservaDTO.getClienteDTO().getNombreCliente() +
-//                ", Fecha: " + reservaDTO.getFecha() +
-//                ", Hora: " + reservaDTO.getHora() +
-//                ", Servicio: " + reservaDTO.getServicioDTO().getNombreServicio();
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaDTO);
     }
         catch (RuntimeException ex){
