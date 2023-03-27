@@ -15,14 +15,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminServiceImpl(AdminRepository aRepo){
         this.aRepo = aRepo;
     }
-    public List<Admin> find(){
-        return aRepo.findAll();
-    }
 
-    @Override
-    public Optional<Admin> find(Integer id) {
-        return aRepo.findById(id);
-    }
 
     @Override
     public Optional<Admin> findByUsername(String username) {
@@ -35,23 +28,6 @@ public class AdminServiceImpl implements AdminService {
         Optional<Admin> userPassValid = this.aRepo.findByUsernameAndPass(admin.getUsername(), admin.getPass());
         return userPassValid.isPresent();
     }
-
-    @Override
-    public Admin add(Admin admin) {
-        return aRepo.save(admin);
-    }
-
-    @Override
-    public Admin find(Admin admin) {
-        return aRepo.save(admin);
-    }
-
-    @Override
-    public String delete(Integer id) {
-        aRepo.deleteById(id);
-        return "Usuario Eliminado";
-    }
-
 
 
 }

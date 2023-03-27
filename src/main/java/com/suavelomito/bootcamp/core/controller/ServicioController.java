@@ -24,4 +24,9 @@ public class ServicioController {
 
         return sServ.getServicio(id);
     }
+    @GetMapping("/all/nombre/{palabra}")
+    public List<Servicio> getServicioNombre(@PathVariable("palabra") String palabra) {
+
+        return sServ.buscarPorNombreEspecifico(palabra);
+    }
 }

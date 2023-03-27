@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
@@ -34,6 +36,7 @@ public class ReservaController {
 
         return rServ.getReserva(id);
     }
+
     @PostMapping("/add")
     public ResponseEntity<ReservaDTO> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
         try{ ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
@@ -46,11 +49,13 @@ public class ReservaController {
 }
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReserva(@PathVariable Integer id, @RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
+        System.out.println("Datos recibidos: " + nuevaReservaDTO.toString());
         try {
             ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
             Reserva reservaActualizada = rServ.updateReserva(id, reservaDTO);
-            String message = "Reserva actualizada correctamente. Id: " + reservaActualizada.getIdreserva();
-            return ResponseEntity.status(HttpStatus.OK).body(message);
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("Reserva actualizada correctamente. Id: ", String.valueOf(reservaActualizada.getIdreserva()));
+            return ResponseEntity.status(HttpStatus.OK).body(responseMap);
         } catch (ResourceNotFoundException ex) {
             ErrorResponse error = new ErrorResponse("Recurso no encontrado", ex.getMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -63,7 +68,9 @@ public class ReservaController {
     public ResponseEntity<?> borrarReserva(@PathVariable Integer id) {
         try {
             rServ.deleteReserva(id);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Reserva eliminada");
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("Reserva eliminada", String.valueOf(id));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMap);
         } catch (ResourceNotFoundException ex) {
             ErrorResponse error = new ErrorResponse("Recurso no encontrado", ex.getMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

@@ -21,15 +21,19 @@ public class ServicioServiceImpl implements ServicioService {
         return sRepo.findBynombreServicio(nombreServicio);
 
     }
-
+    @Override
+    public List<Servicio> buscarPorNombreEspecifico(String palabra) {
+        return sRepo.findByNombreContaining(palabra);
+    }
     @Override
     public List<Servicio> find() {
         return sRepo.findAll();
     }
 
+
     @Override
     public Servicio getServicio(Integer id) {
-        Optional<Servicio> optionalServicio = sRepo.findById(id);
+        Optional<Servicio> optionalServicio = Optional.ofNullable(sRepo.findByIdservicio(id));
         if (optionalServicio.isPresent()) {
             return optionalServicio.get();
         } else {
@@ -37,4 +41,6 @@ public class ServicioServiceImpl implements ServicioService {
         }
 
     }
+
+
 }

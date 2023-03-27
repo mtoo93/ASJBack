@@ -11,9 +11,11 @@ public interface AdminMapper {
 
 
         @Mapping(source = "username", target = "username")
+        @Mapping(source = "pass", target = "pass")
         AdminDTO entityToDTO(Admin admin);
 
         @Mapping(source = "username", target="username")
+        @Mapping(source = "pass", target = "pass")
         Admin dtoToEntity(AdminDTO adminDto);
     }
 

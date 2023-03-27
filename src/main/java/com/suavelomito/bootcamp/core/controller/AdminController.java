@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
@@ -19,28 +21,31 @@ public class AdminController {
 
     private final AdminServiceImpl aServ;
     private final AdminMapper aMap;
-    public AdminController(AdminServiceImpl aServ, AdminMapper aMap){
+
+    public AdminController(AdminServiceImpl aServ, AdminMapper aMap) {
         this.aServ = aServ;
         this.aMap = aMap;
     }
 
-    @GetMapping("/all")
-    public List<Admin> find(){
-        return aServ.find();
-    }
 
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody AdminDTO adminDTO){
+    public ResponseEntity<?> login(@RequestBody AdminDTO adminDTO) {
         try {
-            aServ.userValid(aMap.dtoToEntity(adminDTO));
-            return ResponseEntity.status(HttpStatus.OK).body(adminDTO);
-        }
-        catch (RuntimeException ex){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Datos mal ingresados");
-        }
+            boolean isValid = aServ.userValid(aMap.dtoToEntity(adminDTO));
+            if (isValid) {
+                Map<String, String> responseMap = new HashMap<>();
+                responseMap.put("username", adminDTO.username);
+                return ResponseEntity.status(HttpStatus.OK).body(responseMap);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Datos mal ingresados");
+            }
 
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Datos mal ingresados");
+
+        }
     }
 }
 
