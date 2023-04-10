@@ -3,6 +3,7 @@ import com.suavelomito.bootcamp.core.entity.Cliente;
 import com.suavelomito.bootcamp.core.entity.Reserva;
 import com.suavelomito.bootcamp.core.entity.Servicio;
 import com.suavelomito.bootcamp.core.negocios.dto.ReservaDTO;
+import com.suavelomito.bootcamp.core.negocios.validate.ArgumentNotValidException;
 import com.suavelomito.bootcamp.core.negocios.validate.ResourceNotFoundException;
 import com.suavelomito.bootcamp.core.repository.ReservaRepository;
 import com.suavelomito.bootcamp.core.repository.ServicioRepository;
@@ -44,7 +45,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public Reserva agregarReserva(ReservaDTO reservaDTO) {
+    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ArgumentNotValidException {
 
         Cliente cliente = cServ.addCliente(reservaDTO.clienteDTO);
         Servicio servicio = sRepo.findBynombreServicio(reservaDTO.servicioDTO.nombreServicio)
@@ -68,7 +69,7 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public String deleteReserva(Integer id) {
+    public String deleteReserva(Integer id) throws ResourceNotFoundException {
         Optional<Reserva> reservaOptional = rRepo.findById(id);
         if (reservaOptional.isPresent()) {
             rRepo.deleteById(id);

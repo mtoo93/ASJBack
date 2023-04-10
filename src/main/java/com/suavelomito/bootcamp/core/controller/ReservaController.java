@@ -3,6 +3,7 @@ package com.suavelomito.bootcamp.core.controller;
 import com.suavelomito.bootcamp.core.entity.Reserva;
 import com.suavelomito.bootcamp.core.negocios.dto.NuevaReservaDTO;
 import com.suavelomito.bootcamp.core.negocios.dto.ReservaDTO;
+import com.suavelomito.bootcamp.core.negocios.validate.ArgumentNotValidException;
 import com.suavelomito.bootcamp.core.negocios.validate.ErrorResponse;
 import com.suavelomito.bootcamp.core.negocios.validate.ResourceNotFoundException;
 import com.suavelomito.bootcamp.core.service.implementacion.ReservaServiceImpl;
@@ -37,47 +38,28 @@ public class ReservaController {
         return rServ.getReserva(id);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ReservaDTO> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
-        try{ ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
+    @PostMapping
+    public ResponseEntity<ReservaDTO> agregarReserva(@RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) throws ArgumentNotValidException {
+        ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
             rServ.agregarReserva(reservaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaDTO);
-    }
-        catch (RuntimeException ex){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+
 }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateReserva(@PathVariable Integer id, @RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) {
+    public ResponseEntity<?> updateReserva(@PathVariable Integer id, @RequestBody @Valid NuevaReservaDTO nuevaReservaDTO) throws ResourceNotFoundException {
         System.out.println("Datos recibidos: " + nuevaReservaDTO.toString());
-        try {
             ReservaDTO reservaDTO = nuevaReservaDTO.toReservaDTO();
             Reserva reservaActualizada = rServ.updateReserva(id, reservaDTO);
             Map<String, String> responseMap = new HashMap<>();
             responseMap.put("Reserva actualizada correctamente. Id: ", String.valueOf(reservaActualizada.getIdreserva()));
             return ResponseEntity.status(HttpStatus.OK).body(responseMap);
-        } catch (ResourceNotFoundException ex) {
-            ErrorResponse error = new ErrorResponse("Recurso no encontrado", ex.getMessage());
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            ErrorResponse error = new ErrorResponse("Error interno del servidor", ex.getMessage());
-            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> borrarReserva(@PathVariable Integer id) {
-        try {
+    public ResponseEntity<?> borrarReserva(@PathVariable Integer id) throws ResourceNotFoundException {
             rServ.deleteReserva(id);
             Map<String, String> responseMap = new HashMap<>();
             responseMap.put("Reserva eliminada", String.valueOf(id));
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMap);
-        } catch (ResourceNotFoundException ex) {
-            ErrorResponse error = new ErrorResponse("Recurso no encontrado", ex.getMessage());
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            ErrorResponse error = new ErrorResponse("Error interno del servidor", ex.getMessage());
-            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
 
